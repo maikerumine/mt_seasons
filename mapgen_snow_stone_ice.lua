@@ -7,7 +7,7 @@ minetest.register_alias("mapgen_dirt", "default:dirt")
 minetest.register_alias("mapgen_dirt_with_grass", "default:dirt_with_grass")
 minetest.register_alias("mapgen_sand", "default:sand")
 minetest.register_alias("mapgen_water_source", "default:water_source")
-minetest.register_alias("mapgen_river_water_source", "air")
+minetest.register_alias("mapgen_river_water_source", "default:river_water_source")
 minetest.register_alias("mapgen_lava_source", "default:lava_source")
 minetest.register_alias("mapgen_gravel", "default:gravel")
 minetest.register_alias("mapgen_desert_stone", "default:desert_stone")
@@ -36,7 +36,160 @@ minetest.register_alias("mapgen_stair_cobble", "stairs:stair_cobble")
 minetest.register_alias("mapgen_mossycobble", "default:mossycobble")
 minetest.register_alias("mapgen_sandstonebrick", "default:sandstonebrick")
 minetest.register_alias("mapgen_stair_sandstonebrick", "stairs:stair_sandstonebrick")
+--[[
+minetest.override_item("default:river_water_source", {
+	description = "Snow",
+	tiles = {"default_snow.png"},
+	inventory_image = "default_snowball.png",
+	wield_image = "default_snowball.png",
+	paramtype = "light",
+	buildable_to = true,
+	floodable = true,
+	walkable = false,
+	drawtype = "nodebox",
+	node_box = {
+		type = "fixed",
+		fixed = {
+			{-0.5, -0.5, -0.5, 0.5, -0.25, 0.5},
+		},
+	},
+	groups = {crumbly = 3, falling_node = 1, puts_out_fire = 1},
+	sounds = default.node_sound_dirt_defaults({
+		footstep = {name = "default_snow_footstep", gain = 0.15},
+		dug = {name = "default_snow_footstep", gain = 0.2},
+		dig = {name = "default_snow_footstep", gain = 0.2}
+	}),
 
+	on_construct = function(pos)
+		pos.y = pos.y - 1
+		if minetest.get_node(pos).name == "default:dirt_with_grass" then
+			minetest.set_node(pos, {name = "default:dirt_with_snow"})
+		end
+	end,
+})
+minetest.override_item("default:river_water_flowing", {
+	description = "Snow",
+	tiles = {"default_snow.png"},
+	inventory_image = "default_snowball.png",
+	wield_image = "default_snowball.png",
+	paramtype = "light",
+	buildable_to = true,
+	floodable = true,
+	walkable = false,
+	drawtype = "nodebox",
+	node_box = {
+		type = "fixed",
+		fixed = {
+			{-0.5, -0.5, -0.5, 0.5, -0.25, 0.5},
+		},
+	},
+	groups = {crumbly = 3, falling_node = 1, puts_out_fire = 1},
+	sounds = default.node_sound_dirt_defaults({
+		footstep = {name = "default_snow_footstep", gain = 0.15},
+		dug = {name = "default_snow_footstep", gain = 0.2},
+		dig = {name = "default_snow_footstep", gain = 0.2}
+	}),
+
+	on_construct = function(pos)
+		pos.y = pos.y - 1
+		if minetest.get_node(pos).name == "default:dirt_with_grass" then
+			minetest.set_node(pos, {name = "default:dirt_with_snow"})
+		end
+	end,
+})
+]]
+
+
+minetest.override_item("default:river_water_source", {
+	description = "Dirt",
+	tiles = {"default_invis.png"},
+		alpha = 0,
+	paramtype = "light",
+	special_tiles = {
+		{
+			name = "default_invis.png",
+			backface_culling = false,
+			animation = {
+				type = "vertical_frames",
+				aspect_w = 16,
+				aspect_h = 16,
+				length = 0.8,
+			},
+		},
+		{
+			name = "default_invis.png",
+			backface_culling = true,
+			animation = {
+				type = "vertical_frames",
+				aspect_w = 16,
+				aspect_h = 16,
+				length = 0.8,
+			},
+		},
+	},
+	drawtype = "nodebox",
+	liquidtype = "source",
+	--light_source = default.LIGHT_MAX - 1,
+	walkable = false,
+	--climbable = true,
+	pointable = false,
+	diggable = false,
+	buildable_to = true,
+	is_ground_content = true,
+	liquid_alternative_flowing = "default:river_water_flowing",
+	liquid_alternative_source = "default:river_water_source",
+	liquid_viscosity = 0.0001,
+	liquid_renewable = false,
+	liquid_range = 0,
+	drowning = 0,
+	post_effect_color = {a = 0, r = 30, g = 60, b = 90},
+	groups = {air = 1},
+})
+minetest.override_item("default:river_water_flowing", {
+	description = "Dirt",
+	tiles = {"default_invis.png"},
+		alpha = 0,
+	paramtype = "light",
+	special_tiles = {
+		{
+			name = "default_invis.png",
+			backface_culling = false,
+			animation = {
+				type = "vertical_frames",
+				aspect_w = 16,
+				aspect_h = 16,
+				length = 0.8,
+			},
+		},
+		{
+			name = "default_invis.png",
+			backface_culling = true,
+			animation = {
+				type = "vertical_frames",
+				aspect_w = 16,
+				aspect_h = 16,
+				length = 0.8,
+			},
+		},
+	},
+	drawtype = "plantlike",
+	liquidtype = "source",
+	--light_source = default.LIGHT_MAX - 1,
+	walkable = false,
+	--climbable = true,
+	pointable = false,
+	diggable = false,
+	buildable_to = true,
+	is_ground_content = true,
+	liquid_alternative_flowing = "default:river_water_flowing",
+	liquid_alternative_source = "default:river_water_source",
+	liquid_viscosity = 0.0001,
+	liquid_renewable = false,
+	liquid_range = 0,
+	drowning = 0,
+	groups = {air = 1},
+	post_effect_color = {a = 0, r = 30, g = 60, b = 90},
+})
 
 --
 -- Register ores
@@ -387,14 +540,14 @@ function default.register_biomes()
 
 	minetest.register_biome({
 		name = "glacier",
-		node_dust = "default:stone",
+		node_dust = "default:snow",
 		node_top = "default:stone",
 		depth_top = 1,
 		node_filler = "default:air",
 		depth_filler = 3,
 		node_stone = "default:stone",
-		node_water_top = "default:stone",
-		depth_water_top = 10,
+		node_water_top = "default:ice",
+		depth_water_top = 15,
 		--node_water = "",
 		node_river_water = "default:stone",
 		node_riverbed = "default:stone",
@@ -407,14 +560,14 @@ function default.register_biomes()
 
 	minetest.register_biome({
 		name = "glacier_ocean",
-		node_dust = "default:stone",
+		node_dust = "default:ice",
 		node_top = "default:stone",
 		depth_top = 1,
 		node_filler = "default:stone",
 		depth_filler = 3,
 		--node_stone = "",
-		--node_water_top = "",
-		--depth_water_top = ,
+		node_water_top = "default:ice",
+		depth_water_top = 15,
 		--node_water = "",
 		--node_river_water = "",
 		y_min = -112,
@@ -427,14 +580,14 @@ function default.register_biomes()
 
 	minetest.register_biome({
 		name = "tundra",
-		--node_dust = "",
+		node_dust = "default:snow",
 		node_top = "default:stone",
 		depth_top = 1,
 		node_filler = "default:stone",
 		depth_filler = 1,
 		--node_stone = "",
-		--node_water_top = "",
-		--depth_water_top = ,
+		node_water_top = "default:ice",
+		depth_water_top = 15,
 		--node_water = "",
 		--node_river_water = "",
 		node_riverbed = "default:stone",
@@ -447,14 +600,14 @@ function default.register_biomes()
 
 	minetest.register_biome({
 		name = "tundra_beach",
-		--node_dust = "",
+		node_dust = "default:snow",
 		node_top = "default:stone",
 		depth_top = 1,
 		node_filler = "default:stone",
 		depth_filler = 2,
 		--node_stone = "",
-		--node_water_top = "",
-		--depth_water_top = ,
+		node_water_top = "default:ice",
+		depth_water_top = 15,
 		--node_water = "",
 		--node_river_water = "",
 		node_riverbed = "default:stone",
@@ -467,14 +620,14 @@ function default.register_biomes()
 
 	minetest.register_biome({
 		name = "tundra_ocean",
-		--node_dust = "",
+		node_dust = "default:snow",
 		node_top = "default:stone",
 		depth_top = 1,
 		node_filler = "default:air",
 		depth_filler = 3,
 		--node_stone = "",
-		--node_water_top = "",
-		--depth_water_top = ,
+		node_water_top = "default:ice",
+		depth_water_top = 15,
 		--node_water = "",
 		--node_river_water = "",
 		node_riverbed = "default:stone",
@@ -488,14 +641,14 @@ function default.register_biomes()
 
 	minetest.register_biome({
 		name = "taiga",
-		node_dust = "default:stone",
+		node_dust = "default:snow",
 		node_top = "default:stone",
 		depth_top = 1,
 		node_filler = "default:air",
 		depth_filler = 3,
 		--node_stone = "",
-		--node_water_top = "",
-		--depth_water_top = ,
+		node_water_top = "default:ice",
+		depth_water_top = 15,
 		--node_water = "",
 		--node_river_water = "",
 		node_riverbed = "default:stone",
@@ -508,14 +661,14 @@ function default.register_biomes()
 
 	minetest.register_biome({
 		name = "taiga_ocean",
-		--node_dust = "",
+		node_dust = "default:snow",
 		node_top = "default:stone",
 		depth_top = 1,
 		node_filler = "default:air",
 		depth_filler = 3,
 		--node_stone = "",
-		--node_water_top = "",
-		--depth_water_top = ,
+		node_water_top = "default:ice",
+		depth_water_top = 15,
 		--node_water = "",
 		--node_river_water = "",
 		node_riverbed = "default:stone",
@@ -530,14 +683,14 @@ function default.register_biomes()
 
 	minetest.register_biome({
 		name = "stone_grassland",
-		--node_dust = "",
+		node_dust = "default:snow",
 		node_top = "default:stone",
 		depth_top = 1,
 		node_filler = "default:stone",
 		depth_filler = 1,
 		--node_stone = "",
-		--node_water_top = "",
-		--depth_water_top = ,
+		node_water_top = "default:ice",
+		depth_water_top = 15,
 		--node_water = "",
 		--node_river_water = "",
 		node_riverbed = "default:stone",
@@ -550,14 +703,14 @@ function default.register_biomes()
 
 	minetest.register_biome({
 		name = "stone_grassland_dunes",
-		--node_dust = "",
+		node_dust = "default:snow",
 		node_top = "default:stone",
 		depth_top = 1,
 		node_filler = "default:air",
 		depth_filler = 2,
 		--node_stone = "",
-		--node_water_top = "",
-		--depth_water_top = ,
+		node_water_top = "default:ice",
+		depth_water_top = 15,
 		--node_water = "",
 		--node_river_water = "",
 		node_riverbed = "default:stone",
@@ -570,14 +723,14 @@ function default.register_biomes()
 
 	minetest.register_biome({
 		name = "stone_grassland_ocean",
-		--node_dust = "",
+		node_dust = "default:snow",
 		node_top = "default:stone",
 		depth_top = 1,
 		node_filler = "default:air",
 		depth_filler = 3,
 		--node_stone = "",
-		--node_water_top = "",
-		--depth_water_top = ,
+		node_water_top = "default:ice",
+		depth_water_top = 15,
 		--node_water = "",
 		--node_river_water = "",
 		node_riverbed = "default:stone",
@@ -591,14 +744,14 @@ function default.register_biomes()
 
 	minetest.register_biome({
 		name = "coniferous_forest",
-		--node_dust = "",
+		node_dust = "default:snow",
 		node_top = "default:stone",
 		depth_top = 1,
 		node_filler = "default:air",
 		depth_filler = 3,
 		--node_stone = "",
-		--node_water_top = "",
-		--depth_water_top = ,
+		node_water_top = "default:ice",
+		depth_water_top = 15,
 		--node_water = "",
 		--node_river_water = "",
 		node_riverbed = "default:stone",
@@ -611,14 +764,14 @@ function default.register_biomes()
 
 	minetest.register_biome({
 		name = "coniferous_forest_dunes",
-		--node_dust = "",
+		node_dust = "default:snow",
 		node_top = "default:stone",
 		depth_top = 1,
 		node_filler = "default:air",
 		depth_filler = 3,
 		--node_stone = "",
-		--node_water_top = "",
-		--depth_water_top = ,
+		node_water_top = "default:ice",
+		depth_water_top = 15,
 		--node_water = "",
 		--node_river_water = "",
 		node_riverbed = "default:stone",
@@ -631,14 +784,14 @@ function default.register_biomes()
 
 	minetest.register_biome({
 		name = "coniferous_forest_ocean",
-		--node_dust = "",
+		node_dust = "default:snow",
 		node_top = "default:stone",
 		depth_top = 1,
 		node_filler = "default:stone",
 		depth_filler = 3,
 		--node_stone = "",
-		--node_water_top = "",
-		--depth_water_top = ,
+		node_water_top = "default:ice",
+		depth_water_top = 15,
 		--node_water = "",
 		--node_river_water = "",
 		node_riverbed = "default:stone",
@@ -652,14 +805,14 @@ function default.register_biomes()
 
 	minetest.register_biome({
 		name = "sandstone_grassland",
-		--node_dust = "",
+		node_dust = "default:snow",
 		node_top = "default:stone",
 		depth_top = 1,
 		node_filler = "default:stone",
 		depth_filler = 1,
 		node_stone = "default:stone",
-		--node_water_top = "",
-		--depth_water_top = ,
+		node_water_top = "default:ice",
+		depth_water_top = 15,
 		--node_water = "",
 		--node_river_water = "",
 		node_riverbed = "default:stone",
@@ -672,14 +825,14 @@ function default.register_biomes()
 
 	minetest.register_biome({
 		name = "sandstone_grassland_dunes",
-		--node_dust = "",
+		node_dust = "default:snow",
 		node_top = "default:stone",
 		depth_top = 1,
 		node_filler = "default:air",
 		depth_filler = 2,
 		node_stone = "default:stone",
-		--node_water_top = "",
-		--depth_water_top = ,
+		node_water_top = "default:ice",
+		depth_water_top = 15,
 		--node_water = "",
 		--node_river_water = "",
 		node_riverbed = "default:stone",
@@ -692,14 +845,14 @@ function default.register_biomes()
 
 	minetest.register_biome({
 		name = "sandstone_grassland_ocean",
-		--node_dust = "",
+		node_dust = "default:snow",
 		node_top = "default:stone",
 		depth_top = 1,
 		node_filler = "default:air",
 		depth_filler = 3,
 		node_stone = "default:stone",
-		--node_water_top = "",
-		--depth_water_top = ,
+		node_water_top = "default:ice",
+		depth_water_top = 15,
 		--node_water = "",
 		--node_river_water = "",
 		node_riverbed = "default:stone",
@@ -713,14 +866,14 @@ function default.register_biomes()
 
 	minetest.register_biome({
 		name = "deciduous_forest",
-		--node_dust = "",
+		node_dust = "default:snow",
 		node_top = "default:stone",
 		depth_top = 1,
 		node_filler = "default:air",
 		depth_filler = 3,
 		--node_stone = "",
-		--node_water_top = "",
-		--depth_water_top = ,
+		node_water_top = "default:ice",
+		depth_water_top = 15,
 		--node_water = "",
 		--node_river_water = "",
 		node_riverbed = "default:stone",
@@ -733,14 +886,14 @@ function default.register_biomes()
 
 	minetest.register_biome({
 		name = "deciduous_forest_swamp",
-		--node_dust = "",
+		node_dust = "default:snow",
 		node_top = "default:stone",
 		depth_top = 1,
 		node_filler = "default:air",
 		depth_filler = 3,
 		--node_stone = "",
-		--node_water_top = "",
-		--depth_water_top = ,
+		node_water_top = "default:ice",
+		depth_water_top = 15,
 		--node_water = "",
 		--node_river_water = "",
 		node_riverbed = "default:stone",
@@ -753,14 +906,14 @@ function default.register_biomes()
 
 	minetest.register_biome({
 		name = "deciduous_forest_ocean",
-		--node_dust = "",
+		node_dust = "default:snow",
 		node_top = "default:stone",
 		depth_top = 1,
 		node_filler = "default:air",
 		depth_filler = 3,
 		--node_stone = "",
-		--node_water_top = "",
-		--depth_water_top = ,
+		node_water_top = "default:ice",
+		depth_water_top = 15,
 		--node_water = "",
 		--node_river_water = "",
 		node_riverbed = "default:stone",
@@ -775,14 +928,14 @@ function default.register_biomes()
 
 	minetest.register_biome({
 		name = "desert",
-		--node_dust = "",
+		node_dust = "default:snow",
 		node_top = "default:stone",
 		depth_top = 1,
 		node_filler = "default:stone",
 		depth_filler = 1,
 		node_stone = "default:stone",
-		--node_water_top = "",
-		--depth_water_top = ,
+		node_water_top = "default:ice",
+		depth_water_top = 15,
 		--node_water = "",
 		--node_river_water = "",
 		node_riverbed = "default:stone",
@@ -795,14 +948,14 @@ function default.register_biomes()
 
 	minetest.register_biome({
 		name = "desert_ocean",
-		--node_dust = "",
+		node_dust = "default:snow",
 		node_top = "default:stone",
 		depth_top = 1,
 		node_filler = "default:air",
 		depth_filler = 3,
 		node_stone = "default:stone",
-		--node_water_top = "",
-		--depth_water_top = ,
+		node_water_top = "default:ice",
+		depth_water_top = 15,
 		--node_water = "",
 		--node_river_water = "",
 		node_riverbed = "default:stone",
@@ -816,14 +969,14 @@ function default.register_biomes()
 
 	minetest.register_biome({
 		name = "savanna",
-		--node_dust = "",
+		node_dust = "default:snow",
 		node_top = "default:stone",
 		depth_top = 1,
 		node_filler = "default:stone",
 		depth_filler = 1,
 		--node_stone = "",
-		--node_water_top = "",
-		--depth_water_top = ,
+		node_water_top = "default:ice",
+		depth_water_top = 15,
 		--node_water = "",
 		--node_river_water = "",
 		node_riverbed = "default:stone",
@@ -836,14 +989,14 @@ function default.register_biomes()
 
 	minetest.register_biome({
 		name = "savanna_swamp",
-		--node_dust = "",
+		node_dust = "default:snow",
 		node_top = "default:stone",
 		depth_top = 1,
 		node_filler = "default:air",
 		depth_filler = 3,
 		--node_stone = "",
-		--node_water_top = "",
-		--depth_water_top = ,
+		node_water_top = "default:ice",
+		depth_water_top = 15,
 		--node_water = "",
 		--node_river_water = "",
 		node_riverbed = "default:stone",
@@ -856,14 +1009,14 @@ function default.register_biomes()
 
 	minetest.register_biome({
 		name = "savanna_ocean",
-		--node_dust = "",
+		node_dust = "default:snow",
 		node_top = "default:stone",
 		depth_top = 1,
 		node_filler = "default:air",
 		depth_filler = 3,
 		--node_stone = "",
-		--node_water_top = "",
-		--depth_water_top = ,
+		node_water_top = "default:ice",
+		depth_water_top = 15,
 		--node_water = "",
 		--node_river_water = "",
 		node_riverbed = "default:stone",
@@ -877,14 +1030,14 @@ function default.register_biomes()
 
 	minetest.register_biome({
 		name = "rainforest",
-		--node_dust = "",
+		node_dust = "default:snow",
 		node_top = "default:stone",
 		depth_top = 1,
 		node_filler = "default:air",
 		depth_filler = 3,
 		--node_stone = "",
-		--node_water_top = "",
-		--depth_water_top = ,
+		node_water_top = "default:ice",
+		depth_water_top = 15,
 		--node_water = "",
 		--node_river_water = "",
 		node_riverbed = "default:stone",
@@ -897,14 +1050,14 @@ function default.register_biomes()
 
 	minetest.register_biome({
 		name = "rainforest_swamp",
-		--node_dust = "",
+		node_dust = "default:snow",
 		node_top = "default:stone",
 		depth_top = 1,
 		node_filler = "default:air",
 		depth_filler = 3,
 		--node_stone = "",
-		--node_water_top = "",
-		--depth_water_top = ,
+		node_water_top = "default:ice",
+		depth_water_top = 15,
 		--node_water = "",
 		--node_river_water = "",
 		node_riverbed = "default:stone",
@@ -917,14 +1070,14 @@ function default.register_biomes()
 
 	minetest.register_biome({
 		name = "rainforest_ocean",
-		--node_dust = "",
+		node_dust = "default:snow",
 		node_top = "default:stone",
 		depth_top = 1,
 		node_filler = "default:air",
 		depth_filler = 3,
 		--node_stone = "",
-		--node_water_top = "",
-		--depth_water_top = ,
+		node_water_top = "default:ice",
+		depth_water_top = 15,
 		--node_water = "",
 		--node_river_water = "",
 		node_riverbed = "default:stone",
