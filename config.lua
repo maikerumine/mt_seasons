@@ -17,8 +17,6 @@ mt_seasons.SETTING = 2;
 --	6 == Stone world		An all stone world.  [Works on new map chunks only, irreversable.]
 --	7 == Christmas 		A Christmas winter wonderland world.
 --	8== Cobble! 		LOL.
---	9== Snow and Ice! 	Must Test like.
-
 
 
 
